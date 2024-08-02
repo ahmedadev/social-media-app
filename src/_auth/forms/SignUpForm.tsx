@@ -1,9 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,22 +14,24 @@ import { SignUpValidation } from "@/lib/validation";
 import { z } from "zod";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
+import { createUseraccount } from "@/lib/appwrite/api"; // تأكد من المسار الصحيح
 
 const SignUpForm = () => {
-const isLoading = false;
+  const isLoading = false;
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
-      name:'',
-      username: '',
-      email: '',
-      password:''
+      name: "",
+      username: "",
+      email: "",
+      password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+    const newUser = await createUseraccount(values);
+    console.log(newUser);
   }
 
   return (
@@ -69,7 +71,6 @@ const isLoading = false;
                 <FormControl>
                   <Input type="text" className="shad-input" {...field} />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -83,7 +84,6 @@ const isLoading = false;
                 <FormControl>
                   <Input type="email" className="shad-input" {...field} />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -101,13 +101,24 @@ const isLoading = false;
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary">{
-            isLoading ? (
-            <div className="flex-center gap-2"><Loader/>Loading...</div>
-            ):"Sign up"
-          }</Button>
-          <p className="text-small-regular text-light-2 text-center mt-2">Already have an account ?
-            <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">Log in</Link>
+          <Button type="submit" className="shad-button_primary">
+            {isLoading ? (
+              <div className="flex-center gap-2">
+                <Loader />
+                Loading...
+              </div>
+            ) : (
+              "Sign up"
+            )}
+          </Button>
+          <p className="text-small-regular mt-2 text-center text-light-2">
+            Already have an account?
+            <Link
+              to="/sign-in"
+              className="text-small-semibold ml-1 text-primary-500"
+            >
+              Log in
+            </Link>
           </p>
         </form>
       </div>
