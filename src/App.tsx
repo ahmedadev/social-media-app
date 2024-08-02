@@ -10,6 +10,7 @@ import { Home } from "./_root/pages";
 function App() {
   return (
     <main className="flex h-screen">
+      
       <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/sign-in" element={<SignInForm />} />
