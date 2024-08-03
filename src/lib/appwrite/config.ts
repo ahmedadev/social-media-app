@@ -1,20 +1,20 @@
 import { Client, Account, Databases, Storage, Avatars } from "appwrite";
 
-// قراءة متغيرات البيئة
-const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID;
-const endpoint = import.meta.env.VITE_APPWRITE_URL;
 
-console.log("AppwriteConfig.projectId:", projectId);
-console.log("AppwriteConfig.url:", endpoint);
+export const appWriteConfig = {
+  url: import.meta.env.VITE_APPWRITE_URL,
+  projectId: import.meta.env.VITE_APPWRITE_PROJECT_ID,
+  databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
+  storageId:import.meta.env.VITE_APPWRITE_STORAGE_ID,
+  postCollectionId: import.meta.env.VITE_APPWRITE_POSTS_COLLECTION_ID,
+  userCollectionId: import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID,
+  savesCollectionId: import.meta.env.VITE_APPWRITE_SAVES_COLLECTION_ID,
+};
 
-if (!projectId || !endpoint) {
-  throw new Error(
-    "Missing Appwrite configuration. Please check your environment variables.",
-  );
-}
+
 
 const client = new Client();
-client.setProject(projectId).setEndpoint(endpoint);
+client.setProject(appWriteConfig.projectId).setEndpoint(appWriteConfig.url);
 
 export const account = new Account(client);
 export const databases = new Databases(client);

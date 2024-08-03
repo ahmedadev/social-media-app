@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,8 @@ import { SignUpValidation } from "@/lib/validation";
 import { z } from "zod";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
-import { createUseraccount } from "@/lib/appwrite/api"; // تأكد من المسار الصحيح
+import { createUserAccount } from "@/lib/appwrite/api"; // تأكد من المسار الصحيح
+import { useToast } from "@/components/ui/use-toast";
 
 const SignUpForm = () => {
   const isLoading = false;
@@ -28,10 +28,14 @@ const SignUpForm = () => {
       password: "",
     },
   });
+  const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    const newUser = await createUseraccount(values);
-    console.log(newUser);
+    const newUser = await createUserAccount(values);
+    if (!newUser)  toast({
+      title: "Sign up failed, please try again..",
+    });
+    const session =await function signInAccount(){}
   }
 
   return (
